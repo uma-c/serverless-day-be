@@ -1,68 +1,69 @@
-# ServerlessDay - Workshop back-end
+# ServerlessDay - Back-end workshop
 
-Costruiamo un'applicazione di file sharing completamente serveless con chalice.\
-Questo repository contiene il back-end dell'applicazione.
+We build a fully serveless file sharing application with chalice.
+This repository contains the back end of the application.
 
-Per il codice di front-end e tutte le istruzioni correlate fare riferimento a questo repository: https://github.com/besharpsrl/serverless-day-fe
+For front-end code and all related statements refer to this repository:
 
-## Prerequisiti
+## Prerequisites
 
-- Account AWS
-- Tre bucket S3 per
-- Una Cognito User Pool
-- Due tabelle DynamoDB
+- AWS Account
+- Three S3 buckets
+- A Cognito User Pool
+- Two DynamoDB tables
 
 
-### Bucket S3
+### S3 Bucket
 
-All’applicazione occorrerà un bucket S3 per gli upload dei file degli utenti.\
-In questo caso si tratterà di un bucket privato. Provvediamo quindi alla sua creazione nello stesso modo utilizzato per il front-end, e prendiamo nota del nome del bucket, ci servirà per la configurazione dell’applicazione.
+The application will need an S3 bucket for uploads of users' files.
+In this case, it will be a private bucket. We then create it in the same way that is used for the front end, and we take note of the bucket name, we will need it for the configuration of the application.
 
-Occorrono anche 2 bucket aggiuntivi che saranno usati per la pipeline di CD/CI, uno per contenere configurazioni ed uno per i bundle delle release.\
-Questi due bucket sono opzionali, e vanno creati solo se si decide di implementare la pipeline.
+You also need 2 additional buckets that will be used for the CD/CI pipeline, one to hold configurations and one for release bundles.
+These two buckets are optional, and should only be created if you decide to implement the pipeline.
 
 
 ### Cognito User Pool
 
-Durante il Wizard di creazione possiamo personalizzare alcuni comportamenti; per far funzionare l’applicazione bisogna creare un Pool che permetta gli utenti di registrarsi mediante email e di verificare l’indirizzo utilizzando un codice di sicurezza gestito da Cognito. Occorre anche creare un’app client e prendere nota del suo ID.
+During the Creation Wizard we can customize some behaviors; To make the application work, you need to create a Pool that allows users to register by email and verify the address using a security code managed by Cognito. You also need to create a client app and make a note of its ID.
 
-Scegliamo un nome per la User Pool e avviamo il wizard
+We choose a name for the User Pool and start the wizard
 
 ![Cognito user pool](https://blog.besharp.it/wp-content/uploads/2018/09/SS_19-09-2018_124930.png)
 
 
-Configuriamo il meccanismo di autenticazione e i campi del profilo.
+Let's configure the authentication mechanism and profile fields.
 
 ![Cognito user pool](https://blog.besharp.it/wp-content/uploads/2018/09/SS_19-09-2018_125142.png)
 
-Infine bisogna creare un app client e prendere nota del suo ID. Non bisogna far generare alcun segreto, non servirà per l’utilizzo di Cognito mediante web app.
+Finally, you create a client app and make a note of its ID. You don't have to generate any secrets, it won't be used for the use of Cognito through web apps.
+
 
 ![Cognito user pool](https://blog.besharp.it/wp-content/uploads/2018/09/SS_19-09-2018_125238.png)
 
 ![Cognito user pool](https://blog.besharp.it/wp-content/uploads/2018/09/SS_19-09-2018_125555.png)
 
 
-### Tabelle di DynamoDB
+### DynamoDB tables
 
-Servirà anche una tabella di DynamoDB per contenere i metadati e le informazioni di share dei file. Procediamo quindi alla creazione di una tabella lasciando i valori di default e specificando "owner" con sort key "share_id" come chiave di partizione primaria. Va aggiunto un indice globale "share_id"
+You will also need a DynamoDB table to hold metadata and share information of your files. We then proceed to create a table by leaving the default values and specifying "owner" with sort key "share_id" as the primary partition key. A global "share_id" index should be added
 
 ![Dettagli tabella DynamoDB](https://blog.besharp.it/wp-content/uploads/2018/09/SS_19-09-2018_171125.png)
 
-Un'altra tabella sarà necessaria per l'audit log, anche in questo caso lasciamo tutti i settaggi di default e indichiamo come chiave primare lo `action_time`
+Another table will be required for the audit log, again we leave all the default settings and indicate as the key before the `action_time`
 
 
-## Ottenere il codice
+## Get the code
 
 ```bash
-git clone https://github.com/besharpsrl/serverless-day-be.git
+git clone https://github.com/uma-c/serverless-day-be.git
 ```
 
-Oppure è possibile scaricare uno zip utilizzando il pulsante in alto a destra sulla pagina github.
+Or you can download a zip using the button at the top right of the github page.
 
 
-## Configurazione
+## Setup
 
-Per settare gli ARN e gli ID delle risorse da utilizzare esiste un apposito file di configurazione in ` ./mydoctransfer-lambda/chalicelib/config.py `
+To set the ARN and resource IDs to be used, there is a configuration file in ` ./mydoctransfer-lambda/chalicelib/config.py `
 
 ```python
 # Cognito
@@ -80,18 +81,18 @@ DYNAMODB_AUDIT_TABLE_NAME = 'CHANGE ME'
 S3_UPLOADS_BUCKET_NAME = 'CHANGE ME'
 ```
 
-Indicare ARN, Name, o ID come richiesto.
+Indicate ARN, Name, or ID as required.
 
 
-## Modalità locale
+## Local mode
 
-Il bundle include anche un docker-compose.yml e un Dockerfile che è possibile utilizzare per avviare in locale il backend.
+The bundle also includes a docker-compose.yml and a Dockerfile that you can use to start the backend locally.
 
 ```bash
 docker-compose up 
 ```
 
-Nel caso si preferisca invece evitare docker e installare le dipendenze nel proprio sistema occorre installare python 3.6, pip e successivamente tutte le dipendenze contenute in requirements.txt. Consigliamo vivamente di utilizzare un **VirtualEnv** dedicato nel caso in cui Docker non sia un’opzione praticabile.
+If you prefer to avoid docker and install dependencies on your system, you must install python 3.6, pip, and then all dependencies contained in requirements.txt. We strongly recommend that you use a dedicated **VirtualEnv** in case Docker is not a viable option.
 
 ```bash
 pip3 install -r requirements.txt --user
@@ -100,37 +101,38 @@ pip3 install -r requirements.txt --user
 
 ## Deploy
 
-Chalice è in grado provvedere al deploy e alla configurazione di API Gateway e Lambda; le configurazioni sono espresse in modo idiomatico nel codice applicativo.
+Chalice can deploy and configure Gateway and Lambda APIs; configurations are expressed idiomatically in the application code.
 
-Una volta pronto il progetto si può effettuare il deploy automatico semplicemente invocando
+Once the project is ready, you can deploy automatically simply by invoking
 
 ```bash
 chalice deploy
 ```
 
-Il comando va invocato da uno IAM User o Role con i permessi di creare e gestire Lambda Function, API Gateway, e CloudWatch.
-Per il workshop, un utente con policy `AdministratorAccess` andrà più che bene.
+The command must be invoked by an IAM User or Role with permissions to create and manage Lambda Function, Gateway API, and CloudWatch. For the workshop, a user with policy will do more than fine.
+`AdministratorAccess`
 
 
-## CD/CI (Facoltativo)
+## CI/CD (Optional)
 
-Vogliamo completare l’architettura accennando alle pipeline automatiche per il deploy del codice.
+We want to complete the architecture by mentioning automatic pipelines for code deployment.
 
-Come prima cosa occorre creare una nuova applicazione su CodeBuild e configurarla per utilizzare il file buildspec.yml presente nella root del repository.
+First, you create a new application on CodeBuild and configure it to use the buildspec.yml file in the root of the repository.
 
  ![Code build](https://blog.besharp.it/wp-content/uploads/2018/10/SS_09-10-2018_120438.png)
 
-Bisogna passare a CodeBuild le seguenti variabili d'ambiente:\
+You must pass the following environment and enhance them using the bucket name for configurations and releases.:\
+
+Variables to CodeBuild:
 `CONFIG_S3_BUCKET`\
 `RELEASES_S3_BUCKET`\
-e valorizzarle usando il nome dei bucket per le configurazioni e per le release.
 
 
-Una volta creato e configurato CodeBuild, basta creare una Pipeline che faccia il source da CodeCommit e poi invochi CodeBuild. non occorre specificare lo stadio di deploy, perchè per questo esempio abbiamo incluso le istruzioni nel buildspec.yml in modo che siano eseguite dopo il processo di build.
+Once CodeBuild is created and configured, just create a Pipeline that sources from CodeCommit and then invokes CodeBuild. you don't need to specify the deployment stage, because for this example we've included the statements in buildspec.yml so that they run after the build process.
 
-Di conseguenza, gli IAM role associati ai CodeBuild devono avere il permesso di caricare ed eliminare file da S3, gestire API Gateway e Lambda.
+Therefore, IAM roles associated with CodeBuild must have permission to upload and delete files from S3, manage Gateway AND Lambda APIs.
 
-Analizzando i buildspec possiamo osservare le operazioni eseguite per il build e deploy delle applicazioni.
+By analyzing the buildspec we can see the operations performed for the build and deploy of applications.
 
 ```yaml
 version: 0.1
