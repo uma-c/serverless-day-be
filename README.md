@@ -109,8 +109,7 @@ Once the project is ready, you can deploy automatically simply by invoking
 chalice deploy
 ```
 
-The command must be invoked by an IAM User or Role with permissions to create and manage Lambda Function, Gateway API, and CloudWatch. For the workshop, a user with policy will do more than fine.
-`AdministratorAccess`
+The command must be invoked by an IAM User or Role with permissions to create and manage Lambda Function, Gateway API, and CloudWatch. For the workshop, a user with policy `AdministratorAccess` will do more than fine.
 
 
 ## CI/CD (Optional)
@@ -123,10 +122,9 @@ First, you create a new application on CodeBuild and configure it to use the bui
 
 You must pass the following environment and enhance them using the bucket name for configurations and releases.:\
 
-Variables to CodeBuild:
+Variables to CodeBuild:\
 `CONFIG_S3_BUCKET`\
-`RELEASES_S3_BUCKET`\
-
+`RELEASES_S3_BUCKET`
 
 Once CodeBuild is created and configured, just create a Pipeline that sources from CodeCommit and then invokes CodeBuild. you don't need to specify the deployment stage, because for this example we've included the statements in buildspec.yml so that they run after the build process.
 

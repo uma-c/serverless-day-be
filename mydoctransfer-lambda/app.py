@@ -8,7 +8,7 @@ import logging
 
 ############## Chalice CONFIG ##########
 
-app = Chalice(app_name='mydoctransfer')
+app = Chalice(app_name='mybooks')
 app.debug = True
 app.log.setLevel(logging.DEBUG)
 

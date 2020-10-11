@@ -1,11 +1,11 @@
 {
   "version": "2.0",
-  "app_name": "mydoctransfer",
+  "app_name": "mybooks",
   "stages": {
     "dev": {
       "api_gateway_stage": "dev",
       "manage_iam_role": false,
-      "iam_role_arn": "arn:aws:iam::xxxxxxxxxx:role/xxxxxxxxxx"
+      "iam_role_arn": "arn:aws:iam::942716911722:role/service-role/codebuild-fileshare-backend-service-role"
     }
   }
 }
