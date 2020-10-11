@@ -10,9 +10,6 @@ phases:
     - cd mydoctransfer-lambda/.chalice && aws s3 cp s3://$CONFIG_S3_BUCKET/backend/$ENV/config.json .
     - ./build.sh
     - cd mydoctransfer-lambda/.chalice/deployed && aws s3 sync --delete . s3://$RELEASES_S3_BUCKET/backend/chalice
-  pre_build:
-    commands:
-      - python3 -V
 artifacts:
   type: zip
   files:
