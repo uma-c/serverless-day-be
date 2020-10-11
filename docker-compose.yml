@@ -11,7 +11,7 @@ services:
   lambda:
     build: ./Dockerfiles/lambda
     volumes:
-      - ./mydoctransfer-lambda:/mydoctransfer-lambda
+      - ./mybooks-lambda:/mybooks-lambda
       - ~/.aws:/root/.aws
     ports:
       - "64123:8000"

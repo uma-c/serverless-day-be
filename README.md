@@ -63,7 +63,7 @@ Or you can download a zip using the button at the top right of the github page.
 
 ## Setup
 
-To set the ARN and resource IDs to be used, there is a configuration file in ` ./mydoctransfer-lambda/chalicelib/config.py `
+To set the ARN and resource IDs to be used, there is a configuration file in ` ./mybooks-lambda/chalicelib/config.py `
 
 ```python
 # Cognito
@@ -137,14 +137,14 @@ version: 0.1
 phases:
   install:
     commands:
-    - rm -rf mydoctransfer-lambda/.chalice/deployed
-    - mkdir mydoctransfer-lambda/.chalice/deployed
-    - cd mydoctransfer-lambda/.chalice/deployed && aws s3 sync --delete s3://$RELEASES_S3_BUCKET/backend/chalice .
-    - cd mydoctransfer-lambda && pip3.6 install -r requirements.txt --user
+    - rm -rf mybooks-lambda/.chalice/deployed
+    - mkdir mybooks-lambda/.chalice/deployed
+    - cd mybooks-lambda/.chalice/deployed && aws s3 sync --delete s3://$RELEASES_S3_BUCKET/backend/chalice .
+    - cd mybooks-lambda && pip3.6 install -r requirements.txt --user
     - aws s3 cp s3://$CONFIG_S3_BUCKET/backend/$ENV/modsam.py .
-    - cd mydoctransfer-lambda/.chalice && aws s3 cp s3://$CONFIG_S3_BUCKET/backend/$ENV/config.json .
+    - cd mybooks-lambda/.chalice && aws s3 cp s3://$CONFIG_S3_BUCKET/backend/$ENV/config.json .
     - ./build.sh
-    - cd mydoctransfer-lambda/.chalice/deployed && aws s3 sync --delete . s3://$RELEASES_S3_BUCKET/backend/chalice
+    - cd mybooks-lambda/.chalice/deployed && aws s3 sync --delete . s3://$RELEASES_S3_BUCKET/backend/chalice
 artifacts:
   type: zip
   files:
