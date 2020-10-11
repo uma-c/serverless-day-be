@@ -2,6 +2,14 @@ version: 0.1
 phases:
   install:
     commands:
+    - yum -y groupinstall development
+    - yum -y install zlib-devel
+    - wget https://www.python.org/ftp/python/3.6.0/Python-3.6.0.tar.xz
+    - tar xJf Python-3.6.0.tar.xz
+    - cd Python-3.6.0
+    - ./configure
+    - make
+    - make install
     - rm -rf mydoctransfer-lambda/.chalice/deployed
     - mkdir mydoctransfer-lambda/.chalice/deployed
     - cd mydoctransfer-lambda/.chalice/deployed && aws s3 sync --delete s3://$RELEASES_S3_BUCKET/backend/chalice .
@@ -10,6 +18,9 @@ phases:
     - cd mydoctransfer-lambda/.chalice && aws s3 cp s3://$CONFIG_S3_BUCKET/backend/$ENV/config.json .
     - ./build.sh
     - cd mydoctransfer-lambda/.chalice/deployed && aws s3 sync --delete . s3://$RELEASES_S3_BUCKET/backend/chalice
+  pre_build:
+    commands:
+      - python3 -V
 artifacts:
   type: zip
   files:
