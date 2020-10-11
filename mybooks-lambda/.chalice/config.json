@@ -4,7 +4,7 @@
   "stages": {
     "dev": {
       "api_gateway_stage": "dev",
-      "manage_iam_role": false,
+      "manage_iam_role": true,
       "iam_role_arn": "arn:aws:iam::942716911722:role/service-role/codebuild-fileshare-backend-service-role"
     }
   }
